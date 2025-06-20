@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class StudentRepositoryImpl implements StudentRepository {
 
-    // ConcurrentHashMap<> - потокобезопасная HashMap<>
+    // ConcurrentHashMap<> - thead-safe
     private Map<Long, Student> students = new ConcurrentHashMap<>();
 
     @Override
@@ -34,7 +34,7 @@ public class StudentRepositoryImpl implements StudentRepository {
 
     @Override
     public List<Student> findAll() {
-        // students.values() - потокобезопасно
+        // students.values() - thead-safe
         return new ArrayList<>(students.values());
     }
 }

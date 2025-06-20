@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
-@RestController // так же создает объект класса
+// also creates an object of the class
+@RestController
 public class StudentController {
-    // композиция
-    @Autowired // автоматическое связывание
-    private StudentService studentService;
+
+    @Autowired // automatic binding
+    private StudentService studentService;  // composition
 
     @PostMapping("/student")
     public boolean addStudent(@RequestBody StudentCredentialsDto studentCredentialsDto) {

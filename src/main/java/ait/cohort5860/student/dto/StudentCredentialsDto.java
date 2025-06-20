@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentCredentialsDto {
-    private Long id; // класс обертка(проверка на null, если ничего не ввели)
+    private Long id; // wrapper class (null if nothing is entered)
     private String name;
     private String password;
 }

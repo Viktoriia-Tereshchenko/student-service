@@ -25,7 +25,7 @@ public class Student {
 
     public boolean addScore(String examName, Integer score) {
         return scores.put(examName, score) == null;
-        // true - если это первая оценка
-        // false - если пересдача
+        // true - if this is the first score
+        // false - if retaking a score
     }
 }

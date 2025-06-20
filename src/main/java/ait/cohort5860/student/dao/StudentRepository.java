@@ -9,7 +9,8 @@ public interface StudentRepository {
 
     Student save(Student student);
 
-    Optional<Student> findById(Long id); //обертка
+    //wrap
+    Optional<Student> findById(Long id);
 
     void deleteById(Student student);
 

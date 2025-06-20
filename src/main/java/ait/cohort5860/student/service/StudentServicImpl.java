@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// создать объект класса
-// поместит внутрь аппликационного контекста
+// create an object of class
+// place inside the application context
 @Component
 public class StudentServicImpl implements StudentService {
     @Autowired
@@ -24,8 +24,8 @@ public class StudentServicImpl implements StudentService {
 
     @Override
     public boolean addStudent(StudentCredentialsDto studentCredentialsDto) {
-        // если там null, то isPresent() вернет false
-        // вернет true, если студент уже есть
+        // isPresent() return false if null
+        // isPresent() return true if the student already exists
         if (studentRepository.findById(studentCredentialsDto.getId()).isPresent()) {
             return false;
         }
@@ -39,7 +39,7 @@ public class StudentServicImpl implements StudentService {
 
     @Override
     public StudentDto findStudent(Long id) {
-        // если студента нет, то наша ошибка NotFoundException = 404
+        // if there is no student, our error NotFoundException = 404
         Student student = studentRepository.findById(id).orElseThrow(NotFoundException::new);
         return new StudentDto(student.getId(), student.getName(), student.getScores());
     }
