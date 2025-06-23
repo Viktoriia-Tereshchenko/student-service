@@ -8,19 +8,19 @@ import ait.cohort5860.student.dto.StudentUpdateDto;
 import ait.cohort5860.student.dto.exceptions.NotFoundException;
 import ait.cohort5860.student.model.Student;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 // create an object of class
 // place inside the application context
-@Component
+//@Component
+@Service // @Service = @Component - service
 @RequiredArgsConstructor
-public class StudentServicImpl implements StudentService {
+public class StudentServiceImpl implements StudentService {
     //@Autowired
     private final StudentRepository studentRepository;
 

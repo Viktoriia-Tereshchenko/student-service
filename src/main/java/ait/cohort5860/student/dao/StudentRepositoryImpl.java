@@ -2,6 +2,7 @@ package ait.cohort5860.student.dao;
 
 import ait.cohort5860.student.model.Student;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
+@Repository // // @@Repository = @Component - repository
 public class StudentRepositoryImpl implements StudentRepository {
 
     // ConcurrentHashMap<> - thead-safe
