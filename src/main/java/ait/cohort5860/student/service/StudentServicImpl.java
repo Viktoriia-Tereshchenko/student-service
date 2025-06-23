@@ -54,9 +54,13 @@ public class StudentServicImpl implements StudentService {
     @Override
     public StudentCredentialsDto updateStudent(Long id, StudentUpdateDto studentUpdateDto) {
         Student student = studentRepository.findById(id).orElseThrow(NotFoundException::new);
-        student.setName(studentUpdateDto.getName());
-        student.setPassword(studentUpdateDto.getPassword());
-        studentRepository.save(student);
+        if (studentUpdateDto.getName() != null) {
+            student.setName(studentUpdateDto.getName());
+        }
+        if (studentUpdateDto.getPassword() != null) {
+            student.setPassword(studentUpdateDto.getPassword());
+        }
+        //studentRepository.save(student);
         return new StudentCredentialsDto(student.getId(), student.getName(), student.getPassword());
     }
 
