@@ -5,6 +5,7 @@ import ait.cohort5860.student.dto.StudentCredentialsDto;
 import ait.cohort5860.student.dto.StudentDto;
 import ait.cohort5860.student.dto.StudentUpdateDto;
 import ait.cohort5860.student.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +14,11 @@ import java.util.Set;
 
 // also creates an object of the class
 @RestController
+@RequiredArgsConstructor // consturctor for mandatory fields
 public class StudentController {
 
-    @Autowired // automatic binding
-    private StudentService studentService;  // composition
+    //@Autowired // automatic binding
+    private final StudentService studentService;  // composition
 
     @PostMapping("/student")
     public boolean addStudent(@RequestBody StudentCredentialsDto studentCredentialsDto) {
