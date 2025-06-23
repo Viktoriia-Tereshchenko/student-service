@@ -8,7 +8,7 @@ import ait.cohort5860.student.dto.StudentUpdateDto;
 import ait.cohort5860.student.dto.exceptions.NotFoundException;
 import ait.cohort5860.student.model.Student;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,34 +23,29 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService {
     //@Autowired
     private final StudentRepository studentRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public boolean addStudent(StudentCredentialsDto studentCredentialsDto) {
-        // isPresent() return false if null
-        // isPresent() return true if the student already exists
         if (studentRepository.findById(studentCredentialsDto.getId()).isPresent()) {
             return false;
         }
-        Student student = new Student(
-                studentCredentialsDto.getId(),
-                studentCredentialsDto.getName(),
-                studentCredentialsDto.getPassword());
+        Student student = modelMapper.map(studentCredentialsDto, Student.class);
         studentRepository.save(student);
         return true;
     }
 
     @Override
     public StudentDto findStudent(Long id) {
-        // if there is no student, our error NotFoundException = 404
         Student student = studentRepository.findById(id).orElseThrow(NotFoundException::new);
-        return new StudentDto(student.getId(), student.getName(), student.getScores());
+        return modelMapper.map(student, StudentDto.class);
     }
 
     @Override
     public StudentDto removeStudent(Long id) {
         Student student = studentRepository.findById(id).orElseThrow(NotFoundException::new);
-        studentRepository.deleteById(student);
-        return new StudentDto(student.getId(), student.getName(), student.getScores());
+        studentRepository.deleteById(student.getId());
+        return modelMapper.map(student, StudentDto.class);
     }
 
     @Override
@@ -62,36 +57,34 @@ public class StudentServiceImpl implements StudentService {
         if (studentUpdateDto.getPassword() != null) {
             student.setPassword(studentUpdateDto.getPassword());
         }
-        //studentRepository.save(student);
-        return new StudentCredentialsDto(student.getId(), student.getName(), student.getPassword());
+        studentRepository.save(student);
+        return modelMapper.map(student, StudentCredentialsDto.class);
     }
 
     @Override
     public boolean addScore(Long id, ScoreDto scoreDto) {
         Student student = studentRepository.findById(id).orElseThrow(NotFoundException::new);
-        return student.addScore(scoreDto.getExamName(), scoreDto.getScore());
+        Boolean res = student.addScore(scoreDto.getExamName(), scoreDto.getScore());
+        studentRepository.save(student);
+        return res;
     }
 
     @Override
     public List<StudentDto> findStudentsByName(String name) {
-        return studentRepository.findAll().stream()
-                .filter(s -> s.getName().equalsIgnoreCase(name))
-                .map(s -> new StudentDto(s.getId(), s.getName(), s.getScores()))
+        return studentRepository.findByNameIgnoreCase(name)
+                .map(s -> modelMapper.map(s, StudentDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public Long countStudentsByNames(Set<String> names) {
-        return studentRepository.findAll().stream()
-                .filter(s -> names.contains(s.getName()))
-                .count();
+        return studentRepository.countByNameIn(names);
     }
 
     @Override
     public List<StudentDto> findStudentsByExamNameMinScore(String examName, Integer minScore) {
-        return studentRepository.findAll().stream()
-                .filter(s -> s.getScores().containsKey(examName) && s.getScores().get(examName) >= minScore)
-                .map(s -> new StudentDto(s.getId(), s.getName(), s.getScores()))
+        return studentRepository.findByExamAndScoreGreaterThan(examName, minScore)
+                .map(s -> modelMapper.map(s, StudentDto.class))
                 .collect(Collectors.toList());
     }
 }
