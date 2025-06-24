@@ -151,7 +151,6 @@ public class StudentServiceTest {
         verify(studentRepository).save(student);
     }
 
-    //-----------------------------------------------------------------------
     @Test
     void testAddScoreWhenStudentNotExists() {
         // Arrange
