@@ -79,6 +79,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Long countStudentsByNames(Set<String> names) {
         return studentRepository.countByNameIn(names);
+        //return studentRepository.countByNameInIgnoreCase(names);
     }
 
     @Override
